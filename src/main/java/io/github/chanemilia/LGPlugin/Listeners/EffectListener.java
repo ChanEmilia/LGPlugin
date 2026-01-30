@@ -15,7 +15,7 @@ public class EffectListener implements Listener {
 
     private final LGPlugin plugin;
 
-    public EffectListener(LattePlugin plugin) {
+    public EffectListener(LGPlugin plugin) {
         this.plugin = plugin;
     }
 
