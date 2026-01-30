@@ -34,7 +34,7 @@ public class CombatLogListener implements Listener {
     private final Map<UUID, Integer> timers = new HashMap<>();
     private final Map<UUID, BukkitRunnable> tasks = new HashMap<>();
 
-    public CombatLogListener(LattePlugin plugin) {
+    public CombatLogListener(LGPlugin plugin) {
         this.plugin = plugin;
     }
 
