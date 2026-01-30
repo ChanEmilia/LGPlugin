@@ -5,7 +5,7 @@ import io.github.chanemilia.LGPlugin.Commands.*;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class LattePlugin extends JavaPlugin {
+public class LGPlugin extends JavaPlugin {
 
     private CombatLogListener combatLogListener;
 
