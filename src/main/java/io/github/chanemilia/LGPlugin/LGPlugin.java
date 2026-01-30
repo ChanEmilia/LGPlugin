@@ -44,6 +44,10 @@ public class LattePlugin extends JavaPlugin {
             getServer().getPluginManager().registerEvents(new DeathListener(), this);
         }
 
+        if (getConfig().getBoolean("disabled-effects.enabled", true)) {
+            getServer().getPluginManager().registerEvents(new EffectListener(this), this);
+        }
+
         if (getConfig().getBoolean("explosion-damage.enabled", true)) {
             getServer().getPluginManager().registerEvents(new ExplosionListener(this), this);
         }
