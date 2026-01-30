@@ -43,9 +43,7 @@ public class ItemLimitListener implements Listener {
     private String encumbranceSubtitle = "";
     private final List<PotionEffect> encumbranceEffects = new ArrayList<>();
 
-    private static final long MESSAGE_COOLDOWN_MS = 3000;
-
-    public ItemLimitListener(LattePlugin plugin) {
+    public ItemLimitListener(LGPlugin plugin) {
         this.plugin = plugin;
         loadLimits();
         reloadEncumbranceSettings();
