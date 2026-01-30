@@ -1,4 +1,4 @@
-package io.github.chanemilia.lattePlugin.Listeners;
+package io.github.chanemilia.LGPlugin.Listeners;
 
 import io.github.chanemilia.lattePlugin.LattePlugin;
 import org.bukkit.Material;
