@@ -117,10 +117,15 @@ public class ItemLimitListener implements Listener {
             }
         }
 
-    private void tick() {
-        for (UUID uuid : encumberedPlayers) {
-            Player player = Bukkit.getPlayer(uuid);
-            if (player != null && player.isOnline()) {
+        if (!isOverLimit) {
+            ConfigurationSection groupsSection = config.getConfigurationSection("groups");
+            if (groupsSection != null) {
+                for (String groupKey : groupsSection.getKeys(false)) {
+                    ConfigurationSection group = groupsSection.getConfigurationSection(groupKey);
+                    if (group == null) continue;
+
+                    int limit = group.getInt("limit");
+                    ConfigurationSection groupItems = group.getConfigurationSection("items");
 
                     int groupTotal = 0;
                     if (groupItems != null) {
