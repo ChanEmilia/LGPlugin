@@ -7,14 +7,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Trident;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerKickEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -42,12 +40,6 @@ public class CombatLogListener implements Listener {
         if (!(event.getEntity() instanceof Player victim)) return;
         if (!(event.getDamager() instanceof Player attacker)) return;
         if (event.getFinalDamage() <= MIN_DAMAGE) return;
-
-        /*
-        plugin.getLogger().info(
-                attacker.getName() + " tagged " + victim.getName()
-        );
-        */
 
         tagPlayers(victim, attacker);
     }
@@ -113,17 +105,10 @@ public class CombatLogListener implements Listener {
         tasks.put(player, task);
     }
 
-    // Clears combat tag
     @EventHandler
     public void onDeath(PlayerDeathEvent event) {
         UUID dead = event.getEntity().getUniqueId();
         UUID opponent = combatPairs.get(dead);
-
-        /*
-        plugin.getLogger().info(
-                event.getEntity().getName() + " died, clear combat tag"
-        );
-        */
 
         clearCombat(dead);
         if (opponent != null) {
@@ -131,7 +116,6 @@ public class CombatLogListener implements Listener {
         }
     }
 
-    // I don't actually know how to hide the <player> died message
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         handleCombatLogout(event.getPlayer());
@@ -163,45 +147,9 @@ public class CombatLogListener implements Listener {
         }
     }
 
-    // Elytra
-    @EventHandler
-    public void onGlide(PlayerMoveEvent event) {
-        Player player = event.getPlayer();
-
-        if (!player.isGliding()) return;
-        if (!timers.containsKey(player.getUniqueId())) return;
-
-        player.setGliding(false);
-    }
-
-    private void clearCombat(UUID player) {
-        /*
-        Player p = Bukkit.getPlayer(player);
-        if (p != null) {
-            plugin.getLogger().info("combat tag removed from " + p.getName());
-        }
-        */
-
-        timers.remove(player);
-        combatPairs.remove(player);
-
-        BukkitRunnable task = tasks.remove(player);
-        if (task != null) {
-            task.cancel();
-        }
-    }
-
-    public boolean isCombatTagged(UUID player) {
-        return timers.containsKey(player);
-    }
-
     public void removeAllTags() {
         for (BukkitRunnable task : tasks.values()) {
-            try {
-                task.cancel();
-            } catch (IllegalStateException ignored) {
-                // just in case
-            }
+            task.cancel();
         }
         tasks.clear();
         timers.clear();

@@ -9,8 +9,6 @@ import org.bukkit.event.entity.EntityPotionEffectEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.List;
-
 public class EffectListener implements Listener {
 
     private final LGPlugin plugin;

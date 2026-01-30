@@ -4,6 +4,8 @@ main: io.github.chanemilia.LGPlugin.LGPlugin
 api-version: 1.21
 
 commands:
-  lattereload:
-    description: Reload the plugin configuration
-    permission: latte.reload
+  lgplugin:
+    description: Main command for LGPlugin
+    usage: /lgplugin <subcommand>
+    permission: legacyground.op
+    aliases: [lg]

@@ -18,7 +18,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class EnchantListener implements Listener {
-
     private final LGPlugin plugin;
 
     public EnchantListener(LGPlugin plugin) {

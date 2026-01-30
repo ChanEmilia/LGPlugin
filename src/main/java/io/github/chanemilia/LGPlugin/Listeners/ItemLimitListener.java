@@ -9,26 +9,13 @@ import org.bukkit.Material;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityPickupItemEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.inventory.InventoryDragEvent;
-import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerSwapHandItemsEvent;
-import org.bukkit.event.player.PlayerToggleSprintEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.BundleMeta;
-import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.potion.PotionType;
 
 import java.time.Duration;
 import java.util.*;
@@ -36,11 +23,6 @@ import java.util.*;
 public class ItemLimitListener implements Listener {
     private final LGPlugin plugin;
     private final Set<UUID> encumberedPlayers = new HashSet<>();
-
-    // Encumbrance Settings
-    private String encumbranceMessageType = "ACTION_BAR";
-    private String encumbranceText = "You are overencumbered and cannot run!";
-    private String encumbranceSubtitle = "";
     private final List<PotionEffect> encumbranceEffects = new ArrayList<>();
 
     public ItemLimitListener(LGPlugin plugin) {
@@ -61,9 +43,6 @@ public class ItemLimitListener implements Listener {
         ConfigurationSection effectsSection = plugin.getConfig().getConfigurationSection("item-limits.effects");
         if (effectsSection != null) {
             for (String key : effectsSection.getKeys(false)) {
-                ConfigurationSection effectConfig = effectsSection.getConfigurationSection(key);
-                if (effectConfig == null) continue;
-
                 PotionEffectType type = PotionEffectType.getByName(key);
                 if (type == null) continue;
 

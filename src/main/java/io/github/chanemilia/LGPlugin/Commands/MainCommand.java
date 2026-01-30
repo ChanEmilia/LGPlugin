@@ -9,7 +9,6 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
 public class MainCommand implements CommandExecutor {
-
     private final LGPlugin plugin;
 
     public MainCommand(LGPlugin plugin) {

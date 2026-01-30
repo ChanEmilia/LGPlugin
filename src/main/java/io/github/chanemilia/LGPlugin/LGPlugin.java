@@ -38,7 +38,6 @@ public class LGPlugin extends JavaPlugin {
     }
 
     private void loadPlugin() {
-
         combatLogListener = new CombatLogListener(this);
         if (getConfig().getBoolean("combatlog.enabled", true)) {
             getServer().getPluginManager().registerEvents(combatLogListener, this);
@@ -62,10 +61,6 @@ public class LGPlugin extends JavaPlugin {
 
         if (getConfig().getBoolean("item-limits.enabled", true)) {
             getServer().getPluginManager().registerEvents(new ItemLimitListener(this), this);
-        }
-
-        if (getConfig().getBoolean("disabled-effects.enabled", true)) {
-            getServer().getPluginManager().registerEvents(new EffectListener(this), this);
         }
     }
 }
