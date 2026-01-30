@@ -128,14 +128,51 @@ public class ItemLimitListener implements Listener {
                             Material mat = Material.getMaterial(itemKey);
                             if (mat == null) continue;
 
-                if ("TITLE".equals(encumbranceMessageType)) {
-                    Component subComp = Component.text(encumbranceSubtitle, NamedTextColor.RED);
-                    Title.Times times = Title.Times.times(Duration.ofMillis(0), Duration.ofMillis(1000), Duration.ofMillis(500));
-                    Title title = Title.title(msgComp, subComp, times);
-                    player.showTitle(title);
-                } else {
-                    player.sendActionBar(msgComp);
+                            int weight = groupItems.getInt(itemKey, 1);
+                            int count = itemCounts.getOrDefault(mat, 0);
+                            groupTotal += (count * weight);
+                        }
+                    }
+
+                    if (groupTotal > limit) {
+                        isOverLimit = true;
+                        break;
+                    }
                 }
+            }
+        }
+
+        if (isOverLimit) {
+            encumberedPlayers.add(player.getUniqueId());
+            applyEncumbrance(player, config);
+        } else {
+            encumberedPlayers.remove(player.getUniqueId());
+        }
+    }
+
+    private void countInventory(Inventory inv, Map<Material, Integer> counts, boolean scanBundles, boolean scanShulkers) {
+        for (ItemStack item : inv.getContents()) {
+            addItemCount(item, counts, scanBundles, scanShulkers);
+        }
+    }
+
+    private void addItemCount(ItemStack item, Map<Material, Integer> counts, boolean scanBundles, boolean scanShulkers) {
+        if (item == null || item.getType() == Material.AIR) return;
+
+        counts.merge(item.getType(), item.getAmount(), Integer::sum);
+
+        if (scanBundles && item.hasItemMeta() && item.getItemMeta() instanceof BundleMeta bundleMeta) {
+            for (ItemStack content : bundleMeta.getItems()) {
+                addItemCount(content, counts, scanBundles, scanShulkers); // Recurse for nested bundles? usually disabled in vanilla but good safety
+            }
+        } else if (scanShulkers && item.hasItemMeta() && item.getItemMeta() instanceof BlockStateMeta blockMeta) {
+            if (blockMeta.getBlockState() instanceof ShulkerBox shulker) {
+                for (ItemStack content : shulker.getInventory().getContents()) {
+                    addItemCount(content, counts, scanBundles, scanShulkers); // Recurse, should be pretty efficient
+                }
+            }
+        }
+    }
 
                 // Apply effects
                 for (PotionEffect effect : encumbranceEffects) {
