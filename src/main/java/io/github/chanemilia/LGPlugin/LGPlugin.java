@@ -1,4 +1,4 @@
-package io.github.chanemilia.lattePlugin;
+package io.github.chanemilia.LGPlugin;
 
 import io.github.chanemilia.LGPlugin.Listeners.*;
 import io.github.chanemilia.LGPlugin.Commands.*;
