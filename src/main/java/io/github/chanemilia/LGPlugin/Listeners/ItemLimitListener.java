@@ -1,7 +1,6 @@
 package io.github.chanemilia.lattePlugin.Listeners;
 
-import io.github.chanemilia.lattePlugin.LattePlugin;
-import com.destroystokyo.paper.event.player.PlayerJumpEvent;
+import io.github.chanemilia.LGPlugin.LGPlugin;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.title.Title;
