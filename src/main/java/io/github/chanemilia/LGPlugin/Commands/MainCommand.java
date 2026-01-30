@@ -29,8 +29,12 @@ public class MainCommand implements CommandExecutor {
                 return true;
             }
 
-        plugin.reload();
-        sender.sendMessage(Component.text("Configuration reloaded successfully.", NamedTextColor.GREEN));
+            plugin.reload();
+            sender.sendMessage(Component.text("Configuration reloaded successfully.", NamedTextColor.GREEN));
+            return true;
+        }
+
+        sender.sendMessage(Component.text("Unknown subcommand.", NamedTextColor.RED));
         return true;
     }
 }
