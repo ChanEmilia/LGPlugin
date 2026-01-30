@@ -56,7 +56,7 @@ public class ItemLimitListener implements Listener {
         }
     }
 
-    private void reloadEncumbranceSettings() {
+    private void reloadEffects() {
         encumbranceEffects.clear();
         ConfigurationSection section = plugin.getConfig().getConfigurationSection("item-limits");
 
