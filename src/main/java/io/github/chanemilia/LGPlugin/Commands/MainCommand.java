@@ -1,6 +1,8 @@
 package io.github.chanemilia.LGPlugin.Commands;
 
 import io.github.chanemilia.LGPlugin.LGPlugin;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
