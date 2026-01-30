@@ -13,7 +13,7 @@ import java.util.List;
 
 public class EffectListener implements Listener {
 
-    private final LattePlugin plugin;
+    private final LGPlugin plugin;
 
     public EffectListener(LattePlugin plugin) {
         this.plugin = plugin;
