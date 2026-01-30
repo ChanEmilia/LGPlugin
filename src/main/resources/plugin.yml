@@ -1,6 +1,6 @@
 name: LGPlugin
 version: 1.0.0
-main: io.github.chanemilia.lattePlugin.LattePlugin
+main: io.github.chanemilia.LGPlugin.LGPlugin
 api-version: 1.21
 
 commands:
