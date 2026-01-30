@@ -1,4 +1,4 @@
-package io.github.chanemilia.lattePlugin.Listeners;
+package io.github.chanemilia.LGPlugin.Listeners;
 
 import java.util.ArrayList;
 import java.util.List;
