@@ -184,9 +184,9 @@ public class ItemLimitListener implements Listener {
             player.addPotionEffect(effect);
         }
 
-        for (LimitRule rule : limits) {
-            int current = getCurrentScore(player, rule);
-            int max = rule.getMax();
+        String msgType = config.getString("message-type", "ACTION_BAR").toUpperCase();
+        String text = config.getString("text", "You are overencumbered!");
+        String subtitle = config.getString("subtitle", "");
 
             if (current > max) {
                 isEncumbered = true;
