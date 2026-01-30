@@ -15,7 +15,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 // Thank you so much Woolyenough
 public class ExplosionListener implements Listener {
 
-    private final LattePlugin plugin;
+    private final LGPlugin plugin;
 
     public ExplosionListener(LattePlugin plugin) {
         this.plugin = plugin;
