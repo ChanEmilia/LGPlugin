@@ -17,11 +17,17 @@ public class MainCommand implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!sender.hasPermission("legacyground.reload")) {
-            sender.sendMessage(Component.text("You do not have permission to use this command.", NamedTextColor.RED));
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        if (args.length == 0) {
+            sender.sendMessage(Component.text("Usage: /lgplugin reload", NamedTextColor.RED));
             return true;
         }
+
+        if (args[0].equalsIgnoreCase("reload")) {
+            if (!sender.hasPermission("legacyground.reload")) {
+                sender.sendMessage(Component.text("You do not have permission to use this command.", NamedTextColor.RED));
+                return true;
+            }
 
         plugin.reload();
         sender.sendMessage(Component.text("Configuration reloaded successfully.", NamedTextColor.GREEN));
