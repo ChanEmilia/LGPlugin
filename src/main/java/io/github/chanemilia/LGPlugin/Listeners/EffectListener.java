@@ -1,6 +1,7 @@
 package io.github.chanemilia.LGPlugin.Listeners;
 
-import io.github.chanemilia.lattePlugin.LattePlugin;
+import io.github.chanemilia.LGPlugin.LGPlugin;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
