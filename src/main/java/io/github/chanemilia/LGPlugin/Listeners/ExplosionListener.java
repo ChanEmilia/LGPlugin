@@ -1,6 +1,6 @@
 package io.github.chanemilia.LGPlugin.Listeners;
 
-import io.github.chanemilia.lattePlugin.LattePlugin;
+import io.github.chanemilia.LGPlugin.LGPlugin;
 import org.bukkit.Material;
 import org.bukkit.entity.EnderCrystal;
 import org.bukkit.entity.Entity;
