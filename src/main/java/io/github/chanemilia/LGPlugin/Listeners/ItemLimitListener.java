@@ -1,4 +1,4 @@
-package io.github.chanemilia.lattePlugin.Listeners;
+package io.github.chanemilia.LGPlugin.Listeners;
 
 import io.github.chanemilia.LGPlugin.LGPlugin;
 import net.kyori.adventure.text.Component;
