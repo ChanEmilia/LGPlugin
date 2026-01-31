@@ -1,5 +1,5 @@
 # LGPlugin: Combat Management & Item Control
-Comprehensive server utility plugin (yet another one)
+Comprehensive server utility plugin (yet another one)\
 The first public release brings a major overhaul to the configuration for better readability and introduces several new mechanics for granular server management, so that it can apply to the needs of server owners that are not myself.
 ## Features
 ### Combat Management
