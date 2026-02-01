@@ -33,17 +33,14 @@ restricted-enchantments:
   items: # Priority goes down the list
     MACE: # Item names are inclusive, ie HELMET will apply to every item with helmet in its name
       glint: false # Whether or not to show the enchantment glint
-      mode: whitelist # Only allows listed enchantments, defaults to blacklist
       enchantments:
-        UNBREAKING: 0 # Minimum allowed level, just set it to 0
+        UNBREAKING: 0 # Maximum allowed level
     ELYTRA:
       glint: true
-      mode: blacklist  # Disallows listed enchantments
       enchantments:
-        MENDING: 0 # Maximum allowed level
+        MENDING: 0
     GLOBAL: # Global config should be the lowest priority
       glint: true
-      mode: blacklist
       enchantments:
         VANISHING_CURSE: 0
 
