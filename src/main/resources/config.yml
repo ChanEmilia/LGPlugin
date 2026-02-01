@@ -3,37 +3,44 @@ combatlog:
   enabled: true
   disable-elytra: true # Disable elytra in combat
   cooldowns: # Cooldowns to apply in combat
-    TRIDENT: # Item names in this config use https: //hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
+    - material: TRIDENT # Item names in this config use https: //hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
       duration: 100 # In ticks
       global: false # True = cooldowns also applies outside of combat
       nbt:
         enchantments:
-          riptide: 1
-    TRIDENT:
+          RIPTIDE: 1
+    - TRIDENT:
       duration: 200
       global: false
       nbt:
         enchantments:
-          riptide: 2
-    TRIDENT:
+          RIPTIDE: 2
+    - TRIDENT:
       duration: 300
       global: false
       nbt:
         enchantments:
-          riptide: 3
-    ENDER_PEARL:
+          RIPTIDE: 3
+#   Example of other NBT data checks
+#   - material: STICK
+#     duration: 100
+#     global: true
+#     nbt:
+#       CustomModelData: 12345
+#       name: "Magic Stick"
+    - ENDER_PEARL: # Different cooldowns in and out of combat
       duration: 40
       global: false
-    ENDER_PEARL:
+    - ENDER_PEARL:
       duration: 20
       global: true
-    CHORUS_FRUIT:
+    - CHORUS_FRUIT:
       duration: 200
       global: false
-    CHORUS_FRUIT:
+    - CHORUS_FRUIT:
       duration: 20
       global: true
-    WIND_CHARGE:
+    - WIND_CHARGE:
       duration: 40
       global: true
 
@@ -62,10 +69,14 @@ restricted-enchantments:
       glint: true
       enchantments:
         MENDING: 0
-    GLOBAL: # Global config should be the lowest priority
-      glint: true
-      enchantments:
-        VANISHING_CURSE: 0
+#   HELMET:
+#     glint: true
+#     enchantments:
+#       PROTECTION: 3
+#   GLOBAL: # Global config should be the lowest priority
+#     glint: true
+#     enchantments:
+#       VANISHING_CURSE: 0
 
 # Reduce explosion damage per item
 explosion-damage: # Applies before armour damage reduction calculation
