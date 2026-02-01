@@ -4,8 +4,26 @@ combatlog:
   disable-elytra: true # Disable elytra in combat
   cooldowns: # Cooldowns to apply in combat
     TRIDENT: # Item names in this config use https: //hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
-      duration: 200 # In ticks
-      global: true # True = cooldowns also applies outside of combat
+      duration: 100 # In ticks
+      global: false # True = cooldowns also applies outside of combat
+      nbt:
+        enchantments:
+          riptide: 1
+    TRIDENT:
+      duration: 200
+      global: false
+      nbt:
+        enchantments:
+          riptide: 2
+    TRIDENT:
+      duration: 300
+      global: false
+      nbt:
+        enchantments:
+          riptide: 3
+    ENDER_PEARL:
+      duration: 40
+      global: false
     ENDER_PEARL:
       duration: 20
       global: true
