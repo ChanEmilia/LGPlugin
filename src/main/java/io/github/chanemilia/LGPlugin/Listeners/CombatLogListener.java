@@ -219,4 +219,47 @@ public class CombatLogListener implements Listener {
             tasks.remove(player);
         }
     }
+
+    private void breakElytra(Player player) {
+        for (ItemStack item : player.getInventory().getContents()) {
+            if (item == null || item.getType() != Material.ELYTRA) continue;
+
+            ItemMeta meta = item.getItemMeta();
+            if (!(meta instanceof Damageable damageable)) continue;
+
+            PersistentDataContainer container = meta.getPersistentDataContainer();
+
+            if (!container.has(durabilityKey, PersistentDataType.INTEGER)) {
+                container.set(durabilityKey, PersistentDataType.INTEGER, damageable.getDamage());
+            }
+
+            if (damageable.getDamage() < 431) {
+                damageable.setDamage(431);
+                item.setItemMeta(meta);
+            }
+        }
+    }
+
+    private void restoreElytra(Player player) {
+        for (ItemStack item : player.getInventory().getContents()) {
+            restoreItemStack(item);
+        }
+    }
+
+    private void restoreItemStack(ItemStack item) {
+        if (item == null || item.getType() != Material.ELYTRA) return;
+
+        ItemMeta meta = item.getItemMeta();
+        if (!(meta instanceof Damageable damageable)) return;
+
+        PersistentDataContainer container = meta.getPersistentDataContainer();
+        if (container.has(durabilityKey, PersistentDataType.INTEGER)) {
+            Integer originalDamage = container.get(durabilityKey, PersistentDataType.INTEGER);
+            if (originalDamage != null) {
+                damageable.setDamage(originalDamage);
+                container.remove(durabilityKey);
+                item.setItemMeta(meta);
+            }
+        }
+    }
 }
