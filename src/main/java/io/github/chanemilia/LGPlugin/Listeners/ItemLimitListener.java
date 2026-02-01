@@ -47,6 +47,8 @@ public class ItemLimitListener implements Listener {
                 if (type == null) continue;
 
                 ConfigurationSection eff = effectsSection.getConfigurationSection(key);
+                if (eff == null) continue;
+
                 int duration = eff.getInt("duration", 40);
                 int amplifier = eff.getInt("amplifier", 0);
                 encumbranceEffects.add(new PotionEffect(type, duration, amplifier));
