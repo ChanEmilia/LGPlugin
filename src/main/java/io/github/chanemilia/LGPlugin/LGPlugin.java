@@ -14,8 +14,9 @@ public class LGPlugin extends JavaPlugin {
         saveDefaultConfig();
         loadPlugin();
 
-        if (getCommand("lgplugin") != null) {
-            getCommand("lgplugin").setExecutor(new MainCommand(this));
+        PluginCommand command = getCommand("lgplugin");
+        if (command != null) {
+            command.setExecutor(new MainCommand(this));
         }
 
         getLogger().info("Good job Nina Iseri your plugin works!");
