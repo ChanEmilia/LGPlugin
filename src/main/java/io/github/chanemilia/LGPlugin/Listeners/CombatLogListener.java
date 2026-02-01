@@ -148,6 +148,15 @@ public class CombatLogListener implements Listener {
         if (opponent != null) {
             clearCombat(opponent);
         }
+
+        for (ItemStack drop : event.getDrops()) {
+            restoreItemStack(drop);
+        }
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent event) {
+        restoreElytra(event.getPlayer());
     }
 
     @EventHandler
