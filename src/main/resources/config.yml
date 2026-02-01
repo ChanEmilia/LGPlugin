@@ -29,6 +29,9 @@ combatlog:
       global: true
     CHORUS_FRUIT:
       duration: 200
+      global: false
+    CHORUS_FRUIT:
+      duration: 20
       global: true
     WIND_CHARGE:
       duration: 40
