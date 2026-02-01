@@ -34,7 +34,9 @@ restricted-enchantments:
     MACE: # Item names are inclusive, ie HELMET will apply to every item with helmet in its name
       glint: false # Whether or not to show the enchantment glint
       enchantments:
-        UNBREAKING: 0 # Maximum allowed level
+        DENSITY: 0 # Maximum allowed level
+        BREACH: 0
+        WIND_BURST: 0
     ELYTRA:
       glint: true
       enchantments:
