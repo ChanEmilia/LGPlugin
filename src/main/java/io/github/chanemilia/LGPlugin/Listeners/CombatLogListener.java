@@ -80,7 +80,6 @@ public class CombatLogListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onGlide(EntityToggleGlideEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
-        if (!event.isGliding()) return;
 
         if (event.isGliding() && timers.containsKey(player.getUniqueId())) {
             if (plugin.getConfig().getBoolean("combatlog.disable-elytra", false)) {
