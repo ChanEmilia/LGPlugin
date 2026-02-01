@@ -143,7 +143,6 @@ public class EnchantListener implements Listener {
 
     private int getCappedLevel(ConfigurationSection itemConfig, Enchantment ench, int currentLevel) {
         ConfigurationSection enchantsConfig = itemConfig.getConfigurationSection("enchantments");
-
         String enchName = ench.getKey().getKey().toUpperCase();
 
         if (mode.equals("whitelist")) {
