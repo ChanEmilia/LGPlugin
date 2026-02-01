@@ -196,6 +196,12 @@ public class CombatLogListener implements Listener {
         for (BukkitRunnable task : tasks.values()) {
             task.cancel();
         }
+
+        for (UUID uuid : timers.keySet()) {
+            Player p = Bukkit.getPlayer(uuid);
+            if (p != null) restoreElytra(p);
+        }
+
         tasks.clear();
         timers.clear();
         combatPairs.clear();
