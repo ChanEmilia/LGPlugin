@@ -210,6 +210,10 @@ public class CombatLogListener implements Listener {
     private void clearCombat(UUID player) {
         timers.remove(player);
         combatPairs.remove(player);
+
+        Player p = Bukkit.getPlayer(player);
+        if (p != null) restoreElytra(p);
+
         if (tasks.containsKey(player)) {
             tasks.get(player).cancel();
             tasks.remove(player);
