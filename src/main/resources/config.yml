@@ -41,6 +41,11 @@ restricted-enchantments:
       mode: blacklist  # Disallows listed enchantments
       enchantments:
         MENDING: 0 # Maximum allowed level
+    GLOBAL: # Global config should be the lowest priority
+      glint: true
+      mode: blacklist
+      enchantments:
+        CURSE_OF_VANISHING: 0
 
 # Reduce explosion damage per item
 explosion-damage: # Applies before armour damage reduction calculation
