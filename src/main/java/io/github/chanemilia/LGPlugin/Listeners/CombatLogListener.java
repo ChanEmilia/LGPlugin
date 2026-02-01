@@ -98,6 +98,14 @@ public class CombatLogListener implements Listener {
         combatPairs.put(player, opponent);
         timers.put(player, COMBAT_TIME);
 
+        Player p = Bukkit.getPlayer(player);
+        if (p != null) {
+            if (plugin.getConfig().getBoolean("combatlog.disable-elytra", false)) {
+                if (p.isGliding()) p.setGliding(false);
+                breakElytra(p);
+            }
+        }
+
         if (tasks.containsKey(player)) {
             tasks.get(player).cancel();
         }
