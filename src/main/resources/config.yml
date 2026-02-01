@@ -9,13 +9,13 @@ combatlog:
       nbt:
         enchantments:
           RIPTIDE: 1
-    - TRIDENT:
+    - material: TRIDENT
       duration: 200
       global: false
       nbt:
         enchantments:
           RIPTIDE: 2
-    - TRIDENT:
+    - material: TRIDENT
       duration: 300
       global: false
       nbt:
@@ -28,19 +28,19 @@ combatlog:
 #     nbt:
 #       CustomModelData: 12345
 #       name: "Magic Stick"
-    - ENDER_PEARL: # Different cooldowns in and out of combat
+    - material: ENDER_PEARL # Different cooldowns in and out of combat
       duration: 40
       global: false
-    - ENDER_PEARL:
+    - material: ENDER_PEARL
       duration: 20
       global: true
-    - CHORUS_FRUIT:
+    - material: CHORUS_FRUIT
       duration: 200
       global: false
-    - CHORUS_FRUIT:
+    - material: CHORUS_FRUIT
       duration: 20
       global: true
-    - WIND_CHARGE:
+    - material: WIND_CHARGE
       duration: 40
       global: true
 
