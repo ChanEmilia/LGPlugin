@@ -44,7 +44,7 @@ public class ItemLimitListener implements Listener {
         ConfigurationSection effectsSection = plugin.getConfig().getConfigurationSection("item-limits.effects");
         if (effectsSection != null) {
             for (String key : effectsSection.getKeys(false)) {
-                PotionEffectType type = PotionEffectType.getByKey(NamespacedKey.minecraft(key.toLowerCase()));
+                PotionEffectType type = Registry.POTION_EFFECT_TYPE.get(NamespacedKey.minecraft(key.toLowerCase()));
                 if (type == null) continue;
 
                 ConfigurationSection eff = effectsSection.getConfigurationSection(key);
