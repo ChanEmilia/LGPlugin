@@ -134,6 +134,11 @@ public class EnchantListener implements Listener {
         if (bestMatch != null) {
             return itemsSection.getConfigurationSection(bestMatch);
         }
+
+        if (itemsSection.contains("GLOBAL")) {
+            return itemsSection.getConfigurationSection("GLOBAL");
+        }
+
         return null;
     }
 
