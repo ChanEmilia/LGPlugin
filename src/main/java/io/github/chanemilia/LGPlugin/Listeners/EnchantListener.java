@@ -27,7 +27,6 @@ public class EnchantListener implements Listener {
     @EventHandler
     public void onPrepareEnchant(PrepareItemEnchantEvent event) {
         ItemStack item = event.getItem();
-        if (item == null) return;
 
         ConfigurationSection itemConfig = getItemConfig(item.getType());
         if (itemConfig == null) return;
