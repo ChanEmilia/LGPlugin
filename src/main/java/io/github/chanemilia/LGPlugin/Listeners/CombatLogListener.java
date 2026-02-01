@@ -37,6 +37,7 @@ public class CombatLogListener implements Listener {
 
     public CombatLogListener(LGPlugin plugin) {
         this.plugin = plugin;
+        this.durabilityKey = new NamespacedKey(plugin, "original_elytra_durability");
     }
 
     @EventHandler(ignoreCancelled = true)
