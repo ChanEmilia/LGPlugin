@@ -46,8 +46,8 @@ public class RespawnListener implements Listener {
     }
 
     private void giveKit(Player player) {
-        long cooldownTicks = plugin.getConfig().getLong("respawn-kit.cooldown", 0);
-        if (cooldownTicks > 0) {
+        long cooldownSec = plugin.getConfig().getLong("respawn-kit.cooldown", 0);
+        if (cooldownSec > 0) {
             long last = lastKitTime.getOrDefault(player.getUniqueId(), 0L);
             long now = System.currentTimeMillis();
             if (now - last < cooldownSec * 1000L) {
