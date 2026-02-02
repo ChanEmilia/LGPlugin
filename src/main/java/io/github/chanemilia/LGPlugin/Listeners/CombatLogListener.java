@@ -141,7 +141,8 @@ public class CombatLogListener implements Listener {
 
     private void setCombat(UUID player, UUID opponent) {
         combatPairs.put(player, opponent);
-        timers.put(player, COMBAT_TIME);
+        int combatTime = plugin.getConfig().getInt("combatlog.timer", 30);
+        timers.put(player, combatTime);
 
         Player p = Bukkit.getPlayer(player);
         if (p != null) {
