@@ -53,6 +53,10 @@ public class LGPlugin extends JavaPlugin {
             getServer().getPluginManager().registerEvents(new EffectListener(this), this);
         }
 
+        if (getConfig().getBoolean("respawn-kit.enabled", true)) {
+            getServer().getPluginManager().registerEvents(new RespawnListener(this), this);
+        }
+
         if (getConfig().getBoolean("restricted-enchantments.enabled", true)) {
             getServer().getPluginManager().registerEvents(new EnchantListener(this), this);
         }
