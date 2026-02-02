@@ -23,6 +23,7 @@ The first public release brings a major overhaul to the configuration for better
 # Very lightweight combat log
 combatlog:
   enabled: true
+  timer: 30 # In seconds
   disable-elytra: true # Disable elytra in combat
   cooldowns: # Cooldowns to apply in combat
   #   NBT matching uses substring checks against the item's full component string
