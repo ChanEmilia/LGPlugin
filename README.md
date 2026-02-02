@@ -3,14 +3,18 @@ Comprehensive server utility plugin (yet another one)\
 The first public release brings a major overhaul to the configuration for better readability and introduces several new mechanics for granular server management, so that it can apply to the needs of server owners that are not myself.
 ## Features
 ### Combat Management
-  - An efficient combat tagging system with customizable item cooldowns
+  - An efficient combat tagging system
   - Modify explosion damage individually from different sources
   - Drop player heads upon death
 ### Restrictions & Limits
+  - Apply item cooldowns in and outside of combat
+      - Distinct cooldowns for in and out of combat
+      - Distinct cooldowns for the same item type with different NBT data
   - Limit the quantity of specific items a player can carry
       - Scans Bundles, Shulker Boxes, and Ender Chests (configurable) to prevent bypassing limits
       - Group items (e.g., Breeze Rods and Wind Charges) to share a single limit cap
       - Applies configurable potion effects (Slowness, Blindness, etc.) and warning messages when a player is over-encumbered
+      - Can take NBT values for very detailed restrictions
   - Whitelist or Blacklist specific enchantments on specific item types (e.g., disable Mending on Elytras or cap armour to Protection 3)
   - Completely disable specific potion effects (like Slow Falling or Weakness) from being inflicted on players.
 ## Configuration
@@ -18,19 +22,51 @@ The first public release brings a major overhaul to the configuration for better
 # Very lightweight combat log
 combatlog:
   enabled: true
+  disable-elytra: true # Disable elytra in combat
   cooldowns: # Cooldowns to apply in combat
-    TRIDENT: # Item names in this config use https: //hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
-      duration: 200 # In ticks
-      global: true # True = cooldowns also applies outside of combat
-    ENDER_PEARL:
+    # Item names in this config use https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
+    # NBT matching uses substring checks against the item's full component string
+    # For NBT data, use https://minecraft.wiki/w/Data_component_format
+    # To check exact NBT, use /data get entity @s SelectedItem to see the component structure
+    # Format: "key: value" or just "value" if unique enough
+    - material: TRIDENT
+      duration: 100 # In ticks
+      global: false # True = cooldowns also applies outside of combat
+      nbt:
+        enchantments:'"minecraft:riptide":1'
+    - material: TRIDENT
+      duration: 200
+      global: false
+      nbt:
+        enchantments: '"minecraft:riptide":2'
+    - material: TRIDENT
+      duration: 300
+      global: false
+      nbt:
+        enchantments: '"minecraft:riptide":3'
+#   Example of other Component checks
+#   - material: STICK
+#     duration: 100
+#     global: true
+#     nbt:
+#       custom_model_data: 12345
+#       # Note: Strings in components often use single quotes or escaped double quotes
+#       custom_name: "'{\"text\":\"Magic Stick\"}'"
+    - material: ENDER_PEARL # Different cooldowns in and out of combat
+      duration: 40
+      global: false
+    - material: ENDER_PEARL
       duration: 20
       global: true
-    CHORUS_FRUIT:
+    - material: CHORUS_FRUIT
       duration: 200
+      global: false
+    - material: CHORUS_FRUIT
+      duration: 20
       global: true
-    WIND_CHARGE:
+    - material: WIND_CHARGE
       duration: 40
-      global: true
+      global: false
 
 # Whether to drop player heads on death
 death-drops:
@@ -46,17 +82,25 @@ disabled-potions:
 # Disallow specific enchantments on specific items
 restricted-enchantments:
   enabled: true
-  items:
+  items: # Priority goes down the list
     MACE: # Item names are inclusive, ie HELMET will apply to every item with helmet in its name
       glint: false # Whether or not to show the enchantment glint
-      mode: whitelist # Only allows listed enchantments, defaults to blacklist
       enchantments:
-        UNBREAKING: 0 # Minimum allowed level, just set it to 0
+        DENSITY: 0 # Maximum allowed level
+        BREACH: 0
+        WIND_BURST: 0
     ELYTRA:
       glint: true
-      mode: blacklist  # Disallows listed enchantments
       enchantments:
-        MENDING: 0 # Maximum allowed level
+        MENDING: 0
+#   HELMET:
+#     glint: true
+#     enchantments:
+#       PROTECTION: 3
+#   GLOBAL: # Global config should be the lowest priority
+#     glint: true
+#     enchantments:
+#       VANISHING_CURSE: 0
 
 # Reduce explosion damage per item
 explosion-damage: # Applies before armour damage reduction calculation
@@ -73,24 +117,47 @@ item-limits:
   scan-bundles: true
   scan-shulkers: false
   scan-echest: false
-  message-type: ACTION_BAR # ACTION_BAR or TITLE
-  text: "You are overencumbered and cannot run!"
-  subtitle: "Drop excess items to move" # Only used if message-type is TITLE
-  items:
-    TOTEM_OF_UNDYING: 1
-    ENDER_PEARL: 32
-    COBWEB: 64
-    EXPERIENCE_BOTTLE: 128
-    TURTLE_MASTER: 1 # Potions are added with their PotionEffectType name
-  groups: # For example, you don't want players to bypass the item cap by carrying breeze rods to craft into wind charges
-    wind_items: # Name groups whatever you want
+  message-type: TITLE # ACTION_BAR or TITLE
+  text: "You are overencumbered!"
+  subtitle: "Drop excess items to move"
+
+  limits:
+    - material: TOTEM_OF_UNDYING
+      limit: 1
+    - material: ENDER_PEARL
+      limit: 32
+    - material: COBWEB
+      limit: 64
+    - material: EXPERIENCE_BOTTLE
+      limit: 128
+  # Group limits (Weighted items)
+  groups:
+    wind_items:
       limit: 64
       items:
-        WIND_CHARGE: 1 # See how awesome this is?
-        BREEZE_ROD: 4
-  effects: # Effects to apply to encumbered players
+        - material: WIND_CHARGE
+          weight: 1
+        - material: BREEZE_ROD
+          weight: 4
+    turtle_master:
+      limit: 2
+      items:
+        - material: POTION
+          weight: 2
+          nbt:
+          potion_contents: 'minecraft:strong_turtle_master'
+        - material: POTION
+          weight: 1
+          nbt:
+          potion_contents: 'minecraft:long_turtle_master'
+        - material: POTION
+          weight: 1
+          nbt:
+          potion_contents: 'minecraft:turtle_master'
+
+  effects:
     BLINDNESS:
-      duration: 40 # In ticks!
+      duration: 40
       amplifier: 3
     SLOWNESS:
       duration: 40
