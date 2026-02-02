@@ -50,7 +50,7 @@ public class RespawnListener implements Listener {
         if (cooldownTicks > 0) {
             long last = lastKitTime.getOrDefault(player.getUniqueId(), 0L);
             long now = System.currentTimeMillis();
-            if (now - last < cooldownTicks * 50L) {
+            if (now - last < cooldownSec * 1000L) {
                 return;
             }
             lastKitTime.put(player.getUniqueId(), now);
