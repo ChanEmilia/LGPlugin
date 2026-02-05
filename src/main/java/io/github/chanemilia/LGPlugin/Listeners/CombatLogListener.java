@@ -210,9 +210,7 @@ public class CombatLogListener implements Listener {
 
     private boolean isWeapon(Material mat) {
         String name = mat.name();
-        return name.contains("SWORD") ||
-                name.contains("AXE") ||
-                name.contains("MACE");
+        return name.contains("SWORD") || name.contains("AXE") || name.contains("MACE");
     }
 
     @EventHandler(ignoreCancelled = true)
