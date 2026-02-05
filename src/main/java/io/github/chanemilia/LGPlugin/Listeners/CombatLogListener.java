@@ -153,6 +153,9 @@ public class CombatLogListener implements Listener {
         if (item == null || item.getType() == Material.AIR) return;
 
         Material mat = item.getType();
+
+        if (player.hasCooldown(mat)) return;
+
         List<Map<?, ?>> rules = plugin.getConfig().getMapList("combatlog.cooldowns");
         int maxDuration = -1;
 
