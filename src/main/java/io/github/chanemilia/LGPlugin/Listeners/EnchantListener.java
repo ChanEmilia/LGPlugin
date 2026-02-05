@@ -1,6 +1,7 @@
 package io.github.chanemilia.LGPlugin.Listeners;
 
 import io.github.chanemilia.LGPlugin.LGPlugin;
+import io.github.chanemilia.LGPlugin.Utils.ItemMatcher;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
@@ -10,7 +11,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -26,24 +26,15 @@ public class EnchantListener implements Listener {
 
     @EventHandler
     public void onPrepareEnchant(PrepareItemEnchantEvent event) {
-        ItemStack item = event.getItem();
-
-        ConfigurationSection itemConfig = getItemConfig(item.getType());
-        if (itemConfig == null) return;
-
         EnchantmentOffer[] offers = event.getOffers();
-
         for (int i = 0; i < offers.length; i++) {
             if (offers[i] == null) continue;
 
-            Enchantment offerEnch = offers[i].getEnchantment();
-            int offerLevel = offers[i].getEnchantmentLevel();
-
-            int cappedLevel = getCappedLevel(itemConfig, offerEnch, offerLevel);
+            int cappedLevel = getCappedLevel(event.getItem().getType(), offers[i].getEnchantment(), offers[i].getEnchantmentLevel());
 
             if (cappedLevel == 0) {
                 offers[i] = null;
-            } else if (cappedLevel < offerLevel) {
+            } else if (cappedLevel < offers[i].getEnchantmentLevel()) {
                 offers[i].setEnchantmentLevel(cappedLevel);
             }
         }
@@ -67,9 +58,6 @@ public class EnchantListener implements Listener {
     public void onPrepareAnvil(PrepareAnvilEvent event) {
         ItemStack result = event.getResult();
         if (result == null) return;
-
-        ConfigurationSection itemConfig = getItemConfig(result.getType());
-        if (itemConfig == null) return;
 
         ItemMeta meta = result.getItemMeta();
         if (meta == null) return;
@@ -161,7 +149,6 @@ public class EnchantListener implements Listener {
 
         for (String key : itemsSection.getKeys(false)) {
             if (key.equalsIgnoreCase("GLOBAL")) continue;
-
             if (materialName.contains(key)) {
                 if (bestMatch == null || key.length() > bestMatch.length()) {
                     bestMatch = key;
@@ -173,17 +160,5 @@ public class EnchantListener implements Listener {
             return itemsSection.getConfigurationSection(bestMatch);
         }
         return null;
-    }
-
-    private int getCappedLevel(ConfigurationSection itemConfig, Enchantment ench, int currentLevel) {
-        ConfigurationSection enchantsConfig = itemConfig.getConfigurationSection("enchantments");
-        String enchName = ench.getKey().getKey().toUpperCase();
-
-        if (enchantsConfig == null || !enchantsConfig.contains(enchName)) {
-            return currentLevel;
-        }
-
-        int configMax = enchantsConfig.getInt(enchName);
-        return Math.min(currentLevel, configMax);
     }
 }
