@@ -46,6 +46,10 @@ public class LGPlugin extends JavaPlugin {
         }
 
         if (getConfig().getBoolean("death-drops.enabled", true)) {
+            getServer().getPluginManager().registerEvents(new CraftListener(this), this);
+        }
+
+        if (getConfig().getBoolean("restricted-crafting.enabled", true)) {
             getServer().getPluginManager().registerEvents(new DeathListener(this), this);
         }
 
