@@ -215,10 +215,6 @@ public class CombatLogListener implements Listener {
         tagPlayers(victim, attacker);
     }
 
-    private boolean isNativeWeapon(Material mat) {
-        String name = mat.name();
-        return name.contains("SWORD") || name.contains("AXE") || name.contains("MACE");
-    }
 
     @EventHandler(ignoreCancelled = true)
     public void onGlide(EntityToggleGlideEvent event) {
