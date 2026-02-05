@@ -112,7 +112,24 @@ public class CombatLogListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onConsume(PlayerItemConsumeEvent event) {
-        tryApplyCooldown(event.getPlayer(), event.getItem());
+        final ItemStack item = event.getItem().clone();
+        Bukkit.getScheduler().runTask(plugin, () -> tryApplyCooldown(event.getPlayer(), item));
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onRiptide(PlayerRiptideEvent event) {
+        final ItemStack item = event.getItem().clone();
+        Bukkit.getScheduler().runTask(plugin, () -> tryApplyCooldown(event.getPlayer(), item));
+    }
+
+    private boolean isChargeable(Material mat) {
+        return mat.isEdible() ||
+                mat == Material.BOW ||
+                mat == Material.CROSSBOW ||
+                mat == Material.SHIELD ||
+                mat == Material.TRIDENT ||
+                mat == Material.GOAT_HORN ||
+                mat == Material.SPYGLASS;
     }
 
     private boolean isProjectileItem(Material mat) {
