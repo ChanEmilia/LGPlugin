@@ -208,7 +208,7 @@ public class CombatLogListener implements Listener {
         tagPlayers(victim, attacker);
     }
 
-    private boolean isWeapon(Material mat) {
+    private boolean isNativeWeapon(Material mat) {
         String name = mat.name();
         return name.contains("SWORD") || name.contains("AXE") || name.contains("MACE");
     }
