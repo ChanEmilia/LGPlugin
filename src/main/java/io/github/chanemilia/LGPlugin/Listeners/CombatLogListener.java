@@ -144,9 +144,9 @@ public class CombatLogListener implements Listener {
 
     private boolean isProjectileItem(Material mat) {
         String name = mat.name();
-        return name.contains("PEARL") || name.contains("CHARGE") ||
-                name.contains("TRIDENT") || name.contains("SNOWBALL") ||
-                name.contains("EGG") || name.contains("POTION");
+        return !name.contains("PEARL") && !name.contains("CHARGE") &&
+                !name.contains("TRIDENT") && !name.contains("SNOWBALL") &&
+                !name.contains("EGG") && !name.contains("POTION");
     }
 
     private void tryApplyCooldown(Player player, ItemStack item) {
