@@ -206,6 +206,14 @@ public class CombatLogListener implements Listener {
         tagPlayers(victim, attacker);
     }
 
+    private boolean isWeapon(Material mat) {
+        String name = mat.name();
+        return name.contains("SWORD") ||
+                name.contains("AXE") ||
+                name.contains("TRIDENT") ||
+                name.contains("MACE");
+    }
+
     @EventHandler(ignoreCancelled = true)
     public void onGlide(EntityToggleGlideEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
