@@ -212,7 +212,6 @@ public class CombatLogListener implements Listener {
         String name = mat.name();
         return name.contains("SWORD") ||
                 name.contains("AXE") ||
-                name.contains("TRIDENT") ||
                 name.contains("MACE");
     }
 
