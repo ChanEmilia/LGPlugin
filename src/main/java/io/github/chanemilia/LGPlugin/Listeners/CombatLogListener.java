@@ -110,7 +110,7 @@ public class CombatLogListener implements Listener {
             item = player.getInventory().getItemInMainHand();
             if (isProjectileItem(item.getType())) {
                 item = player.getInventory().getItemInOffHand();
-                if (!isProjectileItem(item.getType())) item = null;
+                if (isProjectileItem(item.getType())) item = null;
             }
         }
 
