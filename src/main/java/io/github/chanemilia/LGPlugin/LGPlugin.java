@@ -9,6 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class LGPlugin extends JavaPlugin {
 
     private CombatLogListener combatLogListener;
+    private CooldownListener cooldownListener;
 
     @Override
     public void onEnable() {
@@ -44,6 +45,9 @@ public class LGPlugin extends JavaPlugin {
         if (getConfig().getBoolean("combatlog.enabled", true)) {
             getServer().getPluginManager().registerEvents(combatLogListener, this);
         }
+
+        cooldownListener = new CooldownListener(this, combatLogListener);
+        getServer().getPluginManager().registerEvents(cooldownListener, this);
 
         if (getConfig().getBoolean("death-drops.enabled", true)) {
             getServer().getPluginManager().registerEvents(new CraftListener(this), this);
