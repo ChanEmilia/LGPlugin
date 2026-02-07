@@ -1,6 +1,8 @@
 package io.github.chanemilia.LGPlugin.Listeners;
 
 import io.github.chanemilia.LGPlugin.LGPlugin;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
