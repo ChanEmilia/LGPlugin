@@ -6,6 +6,7 @@ import org.bukkit.Registry;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -15,6 +16,84 @@ public class ItemMatcher {
 
     public static final Pattern ENCHANT_PATTERN = Pattern.compile("[\"']?([a-z0-9_:]+)[\"']?:(\\d+)");
 
+    /**
+     * Cleans the config string: removes quotes, strips "minecraft:", and lowercases it.
+     */
+    private static String cleanKey(String key) {
+        if (key == null) return "";
+        String cleaned = key.replace("\"", "").replace("'", "").trim().toLowerCase();
+        if (cleaned.startsWith("minecraft:")) {
+            cleaned = cleaned.substring(10);
+        }
+        return cleaned;
+    }
+
+    /**
+     * Checks if the given material matches the configuration key using the user's specified logic:
+     * 1. Exact Namespace Match
+     * 2. Exact Enum Match
+     * 3. Partial Namespace Match
+     * 4. Partial Enum Match
+     */
+    public static boolean matchesMaterial(Material material, String configKey) {
+        if (material == null || configKey == null) return false;
+        String cleanConfig = cleanKey(configKey);
+        String matKey = material.getKey().getKey().toLowerCase();
+        String matEnum = material.name().toLowerCase();
+
+        // 1. Exact Namespace Match
+        if (matKey.equals(cleanConfig)) return true;
+
+        // 2. Exact Enum Match
+        if (matEnum.equals(cleanConfig)) return true;
+
+        // 3. Partial Namespace Match
+        if (matKey.contains(cleanConfig)) return true;
+
+        // 4. Partial Enum Match
+        if (matEnum.contains(cleanConfig)) return true;
+
+        return false;
+    }
+
+    /**
+     * Matches Enchantments using the same logic.
+     */
+    public static boolean matchesEnchantment(Enchantment enchantment, String configKey) {
+        if (enchantment == null || configKey == null) return false;
+        String cleanConfig = cleanKey(configKey);
+        String enchKey = enchantment.getKey().getKey().toLowerCase();
+        // Bukkit Enchantment names are often deprecated or weird, but we check name() just in case
+        String enchName = enchantment.getName().toLowerCase();
+
+        if (enchKey.equals(cleanConfig)) return true;
+        if (enchName.equals(cleanConfig)) return true;
+
+        if (enchKey.contains(cleanConfig)) return true;
+        if (enchName.contains(cleanConfig)) return true;
+
+        return false;
+    }
+
+    /**
+     * Matches PotionEffectTypes using the same logic.
+     */
+    public static boolean matchesPotion(PotionEffectType type, String configKey) {
+        if (type == null || configKey == null) return false;
+        String cleanConfig = cleanKey(configKey);
+        String typeKey = type.getKey().getKey().toLowerCase();
+        String typeName = type.getName().toLowerCase();
+
+        if (typeKey.equals(cleanConfig)) return true;
+        if (typeName.equals(cleanConfig)) return true;
+
+        if (typeKey.contains(cleanConfig)) return true;
+        if (typeName.contains(cleanConfig)) return true;
+
+        return false;
+    }
+
+    // NBT Checking Logic (Unchanged but kept for context)
     @SuppressWarnings("deprecation")
     public static boolean checkNbt(ItemStack item, Map<?, ?> nbt) {
         if (item == null || !item.hasItemMeta()) return false;
@@ -96,37 +175,62 @@ public class ItemMatcher {
         return true;
     }
 
-    // Public Resolution Helpers
+    // Public Resolution Helpers (Used for creating items or getting specific instances)
     public static Material resolveMaterial(String name) {
         if (name == null) return null;
+        String clean = cleanKey(name);
+
+        // 1. Try Exact Namespaced Key
+        Material mat = Material.matchMaterial(clean);
+        if (mat != null) return mat;
+
+        // 2. Try Exact Enum (matchMaterial usually handles this, but strictly speaking:)
         try {
-            return Material.valueOf(name.toUpperCase());
+            return Material.valueOf(clean.toUpperCase());
         } catch (IllegalArgumentException ignored) {}
 
-        Material match = Material.matchMaterial(name);
-        if (match != null) return match;
-
-        if (name.contains(":")) {
-            return Material.matchMaterial(name.split(":")[1]);
-        } else {
-            return Material.matchMaterial("minecraft:" + name);
-        }
+        // For resolution (creation), we do NOT do partial matches, as we need a single concrete Material.
+        // We fall back to standard matchMaterial with minecraft prefix if needed
+        return Material.matchMaterial("minecraft:" + clean);
     }
 
     @SuppressWarnings("deprecation")
     public static Enchantment resolveEnchantment(String key) {
-        NamespacedKey nsKey = NamespacedKey.fromString(key.toLowerCase());
-        if (nsKey == null && !key.contains(":")) {
-            nsKey = NamespacedKey.minecraft(key.toLowerCase());
+        if (key == null) return null;
+        String clean = cleanKey(key);
+
+        NamespacedKey nsKey = NamespacedKey.minecraft(clean);
+        Enchantment ench = Registry.ENCHANTMENT.get(nsKey);
+        if (ench != null) return ench;
+
+        try {
+            return Enchantment.getByName(clean.toUpperCase());
+        } catch (Exception ignored) {}
+
+        return null;
+    }
+
+    @SuppressWarnings("deprecation")
+    public static PotionEffectType resolvePotionEffectType(String key) {
+        if (key == null) return null;
+        String clean = cleanKey(key); // This strips "minecraft:" if present
+
+        NamespacedKey nsKey;
+        if (clean.contains(":")) {
+            // It was a custom namespace, or we failed to strip it properly
+            nsKey = NamespacedKey.fromString(clean);
+        } else {
+            // It's a standard key, default to minecraft namespace
+            nsKey = NamespacedKey.minecraft(clean);
         }
 
         if (nsKey != null) {
-            Enchantment ench = Registry.ENCHANTMENT.get(nsKey);
-            if (ench != null) return ench;
+            PotionEffectType type = Registry.POTION_EFFECT_TYPE.get(nsKey);
+            if (type != null) return type;
         }
 
         try {
-            return Enchantment.getByName(key.toUpperCase());
+            return PotionEffectType.getByName(clean.toUpperCase());
         } catch (Exception ignored) {}
 
         return null;
