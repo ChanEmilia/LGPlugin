@@ -30,8 +30,9 @@ public class EffectListener implements Listener {
         ConfigurationSection effectsConfig = plugin.getConfig().getConfigurationSection("disabled-potions.effects");
 
         if (effectsConfig == null) return;
-        
-        String effectName = type.getKey().getKey().toUpperCase();
+
+        for (String effectName : effectsConfig.getKeys(false)) {
+            PotionEffectType configuredType = getPotionEffectType(effectName);
 
         if (effectsConfig.contains(effectName)) {
             int maxAmplifier = effectsConfig.getInt(effectName);
