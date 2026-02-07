@@ -229,16 +229,7 @@ public class ItemLimitListener implements Listener {
         }
     }
 
-    private static class GroupRule {
-        final String name;
-        final int limit;
-        final List<WeightedItem> items;
-
-        GroupRule(String name, int limit, List<WeightedItem> items) {
-            this.name = name;
-            this.limit = limit;
-            this.items = items;
-        }
+    private record GroupRule(String name, int limit, List<WeightedItem> items) {
 
         int getWeight(ItemStack item) {
             for (WeightedItem weightedItem : items) {
