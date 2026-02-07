@@ -106,22 +106,12 @@ public class CraftListener implements Listener {
         if (result == null || result.getType() == Material.AIR) return false;
 
         List<Map<?, ?>> restrictions = plugin.getConfig().getMapList("restricted-crafting.items");
-        String itemName = result.getType().name();
 
         for (Map<?, ?> rule : restrictions) {
             String configName = (String) rule.get("material");
             if (configName == null) continue;
 
-            Material exactMat = ItemMatcher.resolveMaterial(configName);
-            boolean isMatch;
-
-            if (exactMat != null) {
-                isMatch = (result.getType() == exactMat);
-            } else {
-                isMatch = itemName.contains(configName.toUpperCase());
-            }
-
-            if (isMatch) {
+            if (ItemMatcher.matchesMaterial(result.getType(), configName)) {
                 if (rule.containsKey("nbt")) {
                     Map<?, ?> nbtRules = (Map<?, ?>) rule.get("nbt");
                     if (!ItemMatcher.checkNbt(result, nbtRules)) {
