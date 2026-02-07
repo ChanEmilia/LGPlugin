@@ -131,9 +131,8 @@ public class EnchantListener implements Listener {
         if (enchants == null) return -1;
 
         for (String key : enchants.getKeys(false)) {
-            Enchantment resolved = ItemMatcher.resolveEnchantment(key);
 
-            if (resolved != null && resolved.equals(target)) {
+            if (ItemMatcher.matchesEnchantment(target, key)) {
                 return enchants.getInt(key);
             }
         }
@@ -144,12 +143,12 @@ public class EnchantListener implements Listener {
         ConfigurationSection itemsSection = plugin.getConfig().getConfigurationSection("restricted-enchantments.items");
         if (itemsSection == null) return null;
 
-        String materialName = material.name();
         String bestMatch = null;
 
         for (String key : itemsSection.getKeys(false)) {
             if (key.equalsIgnoreCase("GLOBAL")) continue;
-            if (materialName.contains(key)) {
+
+            if (ItemMatcher.matchesMaterial(material, key)) {
                 if (bestMatch == null || key.length() > bestMatch.length()) {
                     bestMatch = key;
                 }
