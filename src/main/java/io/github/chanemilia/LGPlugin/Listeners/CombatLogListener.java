@@ -201,7 +201,7 @@ public class CombatLogListener implements Listener {
         if (!(event.getDamager() instanceof Player attacker)) return;
 
         ItemStack weapon = attacker.getInventory().getItemInMainHand();
-        if (weapon == null || weapon.getType().isAir()) return;
+        if (weapon.getType().isAir()) return;
 
         ItemMeta meta = weapon.getItemMeta();
         if (meta != null && meta.hasAttributeModifiers()) {
