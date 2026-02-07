@@ -7,8 +7,6 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.Registry;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -50,7 +48,8 @@ public class ItemLimitListener implements Listener {
         ConfigurationSection effectsSection = plugin.getConfig().getConfigurationSection("item-limits.effects");
         if (effectsSection != null) {
             for (String key : effectsSection.getKeys(false)) {
-                PotionEffectType type = Registry.POTION_EFFECT_TYPE.get(NamespacedKey.minecraft(key.toLowerCase()));
+                PotionEffectType type = ItemMatcher.resolvePotionEffectType(key);
+
                 if (type == null) continue;
 
                 ConfigurationSection eff = effectsSection.getConfigurationSection(key);
@@ -224,12 +223,21 @@ public class ItemLimitListener implements Listener {
         }
 
         boolean matches(ItemStack item) {
-            if (!item.getType().name().equals(material)) return false;
+            if (!ItemMatcher.matchesMaterial(item.getType(), material)) return false;
             return nbt == null || ItemMatcher.checkNbt(item, nbt);
         }
     }
 
-    private record GroupRule(String name, int limit, List<WeightedItem> items) {
+    private static class GroupRule {
+        final String name;
+        final int limit;
+        final List<WeightedItem> items;
+
+        GroupRule(String name, int limit, List<WeightedItem> items) {
+            this.name = name;
+            this.limit = limit;
+            this.items = items;
+        }
 
         int getWeight(ItemStack item) {
             for (WeightedItem weightedItem : items) {
@@ -241,10 +249,19 @@ public class ItemLimitListener implements Listener {
         }
     }
 
-    private record WeightedItem(String material, int weight, Map<?, ?> nbt) {
+    private static class WeightedItem {
+        final String material;
+        final int weight;
+        final Map<?, ?> nbt;
+
+        WeightedItem(String material, int weight, Map<?, ?> nbt) {
+            this.material = material;
+            this.weight = weight;
+            this.nbt = nbt;
+        }
 
         boolean matches(ItemStack item) {
-            if (!item.getType().name().equals(material)) return false;
+            if (!ItemMatcher.matchesMaterial(item.getType(), material)) return false;
             return nbt == null || ItemMatcher.checkNbt(item, nbt);
         }
     }
