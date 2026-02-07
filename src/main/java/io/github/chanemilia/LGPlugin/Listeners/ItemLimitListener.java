@@ -251,16 +251,7 @@ public class ItemLimitListener implements Listener {
         }
     }
 
-    private static class WeightedItem {
-        final String material;
-        final int weight;
-        final Map<?, ?> nbt;
-
-        WeightedItem(String material, int weight, Map<?, ?> nbt) {
-            this.material = material;
-            this.weight = weight;
-            this.nbt = nbt;
-        }
+    private record WeightedItem(String material, int weight, Map<?, ?> nbt) {
 
         boolean matches(ItemStack item) {
             if (!item.getType().name().equals(material)) return false;
