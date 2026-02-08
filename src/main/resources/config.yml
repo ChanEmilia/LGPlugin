@@ -58,6 +58,9 @@ cooldowns: # Item cooldowns
   - material: "minecraft:wind_charge"
     duration: 40
     global: false
+  - material: "minecraft:totem_of_undying"
+    duration: 600
+    global: false
 
 # Whether to drop player heads on death
 death-drops:
@@ -122,11 +125,11 @@ respawn-kit:
 disabled-potions:
   enabled: true
   effects:
-    "minecraft:weakness": 0 # Maximum allowed level
+    "minecraft:weakness": -1 # Maximum allowed level
     #   ^^ All effects in this config can either be in the form of Minecraft Namespaced Keys
     #   or Bukkit Enum names (https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionEffectType.html), e.g:
-    #   WEAKNESS: 0
-    "minecraft:slow_falling": 0
+    #   WEAKNESS: -1
+    "minecraft:slow_falling": -1
 
 # Disallow specific enchantments on specific items
 restricted-enchantments:
@@ -212,37 +215,10 @@ item-limits:
           weight: 1
           nbt:
             potion_contents: "minecraft:turtle_master"
-        - material: "minecraft:splash_potion"
-          weight: 2
-          nbt:
-            potion_contents: "minecraft:strong_turtle_master"
-        - material: "minecraft:splash_potion"
-          weight: 1
-          nbt:
-            potion_contents: "minecraft:long_turtle_master"
-        - material: "minecraft:splash_potion"
-          weight: 1
-          nbt:
-            potion_contents: "minecraft:turtle_master"
-        - material: "minecraft:lingering_potion"
-          weight: 2
-          nbt:
-            potion_contents: "minecraft:strong_turtle_master"
-        - material: "minecraft:lingering_potion"
-          weight: 1
-          nbt:
-            potion_contents: "minecraft:long_turtle_master"
-        - material: "minecraft:lingering_potion"
-          weight: 1
-          nbt:
-            potion_contents: "minecraft:turtle_master"
   effects:
     "minecraft:blindness":
-      duration: 21 # In ticks
+      duration: 39 # In ticks
       amplifier: 3
     "minecraft:slowness":
-      duration: 21
+      duration: 39
       amplifier: 3
-    "minecraft:weakness":
-      duration: 21
-      amplifier: 1
