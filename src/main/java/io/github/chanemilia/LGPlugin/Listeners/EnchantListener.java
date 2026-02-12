@@ -48,7 +48,7 @@ public class EnchantListener implements Listener {
             boolean showGlint = itemConfig.getBoolean("glint", true);
             ItemMeta meta = event.getItem().getItemMeta();
             if (meta != null) {
-                meta.setEnchantmentGlintOverride(showGlint ? null : false);
+                handleGlint(meta, itemConfig, event.getEnchantsToAdd().keySet());
                 event.getItem().setItemMeta(meta);
             }
         }
