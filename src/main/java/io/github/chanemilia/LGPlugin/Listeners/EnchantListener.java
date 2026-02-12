@@ -102,6 +102,40 @@ public class EnchantListener implements Listener {
         }
     }
 
+    private boolean handleGlint(ItemMeta meta, ConfigurationSection itemConfig, Set<Enchantment> currentEnchants) {
+        boolean configShowGlint = itemConfig.getBoolean("glint", true);
+        Boolean desiredOverride = null;
+
+        if (!configShowGlint) {
+            desiredOverride = false;
+
+            ConfigurationSection restrictedEnchants = itemConfig.getConfigurationSection("enchantments");
+            if (restrictedEnchants != null && currentEnchants != null) {
+                for (Enchantment ench : currentEnchants) {
+                    if (isEnchantmentListed(restrictedEnchants, ench)) {
+                        desiredOverride = null;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (!Objects.equals(meta.getEnchantmentGlintOverride(), desiredOverride)) {
+            meta.setEnchantmentGlintOverride(desiredOverride);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isEnchantmentListed(ConfigurationSection enchantsConfig, Enchantment ench) {
+        for (String key : enchantsConfig.getKeys(false)) {
+            if (ItemMatcher.matchesEnchantment(ench, key)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private int getCappedLevel(Material material, Enchantment ench, int currentLevel) {
         ConfigurationSection itemsSection = plugin.getConfig().getConfigurationSection("restricted-enchantments.items");
         if (itemsSection == null) return currentLevel;
