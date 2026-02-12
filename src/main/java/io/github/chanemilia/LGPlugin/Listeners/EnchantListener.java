@@ -16,6 +16,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 public class EnchantListener implements Listener {
     private final LGPlugin plugin;
@@ -45,7 +47,6 @@ public class EnchantListener implements Listener {
         ConfigurationSection itemConfig = getEffectiveConfig(event.getItem().getType());
 
         if (itemConfig != null) {
-            boolean showGlint = itemConfig.getBoolean("glint", true);
             ItemMeta meta = event.getItem().getItemMeta();
             if (meta != null) {
                 handleGlint(meta, itemConfig, event.getEnchantsToAdd().keySet());
@@ -78,20 +79,9 @@ public class EnchantListener implements Listener {
             }
         }
 
-        ConfigurationSection itemConfig = getSpecificItemConfig(result.getType());
-
-        if (itemConfig != null && meta.hasEnchants()) {
-            boolean showGlint = itemConfig.getBoolean("glint", true);
-
-            Boolean currentOverride = meta.getEnchantmentGlintOverride();
-
-            if (!showGlint) {
-                if (currentOverride) {
-                    meta.setEnchantmentGlintOverride(false);
-                    changed = true;
-                }
-            } else {
-                meta.setEnchantmentGlintOverride(null);
+        ConfigurationSection itemConfig = getEffectiveConfig(result.getType());
+        if (itemConfig != null) {
+            if (handleGlint(meta, itemConfig, meta.getEnchants().keySet())) {
                 changed = true;
             }
         }
